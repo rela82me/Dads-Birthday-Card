@@ -1,29 +1,28 @@
-# Dad Card 🃏
+# Dad Card 💌
 
-An MCP server for all your dad-joking needs. Powered by Node.js and the Model Context Protocol.
+A beautiful, animated, and customizable digital birthday card for a loved one. Built with React, Vite, and Tailwind CSS.
 
-<!-- Add badges here -->
-<!--
-[![NPM version](https://img.shields.io/npm/v/dad-card.svg?style=flat)](https://www.npmjs.com/package/dad-card)
-[![Build Status](https://img.shields.io/travis/your-username/dad-card.svg?style=flat&label=Travis)](https://travis-ci.org/your-username/dad-card)
--->
+![Dad Card Screenshot](placeholder_for_screenshot.png)
+_(Add a screenshot or GIF of your project here!)_
 
-`dad-card` is a lightweight Model Context Protocol (MCP) server that exposes tools and resources for Large Language Model (LLM) applications. It's designed to be a fun and practical example of how to provide specialized capabilities to AI agents, focusing on the timeless art of dad jokes and heartfelt messages.
+This project is a heartfelt, single-page digital birthday card designed to celebrate a special person. It features smooth animations, customizable content, and a clean, modern aesthetic. It was built as a fun personal project and a showcase of front-end development skills.
 
 ## ✨ Features
 
-- **Dad Joke Tool**: On-demand dad jokes, ready to be integrated into any LLM-powered chat.
-- **Dynamic Card Generator**: Create personalized digital card messages for various occasions.
-- **MCP Compliant**: Built with `@modelcontextprotocol/sdk` to easily connect with MCP clients.
-- **Configurable**: Uses `dotenv` to manage environment variables for easy setup.
-- **Formatted Text**: Leverages `word-wrap` to ensure messages and jokes are perfectly formatted.
+- **Stunning Animations**: Built with `framer-motion` for a fluid and engaging user experience.
+- **Themed & Customizable**: Easily change the name, year, color theme, and photo gallery by editing one file.
+- **Visual Effects**: Includes dynamic components like a starscape background, glowing backdrops, and confetti effects.
+- **Responsive Design**: Looks great on both desktop and mobile devices.
+- **Modern Tech Stack**: Powered by React, Vite, TypeScript, and styled with Tailwind CSS.
 
 ## 🚀 Getting Started
 
+To get a local copy up and running, follow these simple steps.
+
 ### Prerequisites
 
-- Node.js (v18.x or higher recommended)
-- npm
+- Node.js (v18.x or higher)
+- npm, yarn, or pnpm
 
 ### Installation
 
@@ -35,116 +34,57 @@ An MCP server for all your dad-joking needs. Powered by Node.js and the Model Co
     ```
 
 2.  Install the dependencies:
+
     ```sh
     npm install
     ```
 
-### Configuration
+### Running the Development Server
 
-Before running the server, you need to set up your environment variables.
-
-1.  Create a `.env` file in the root of the project by copying the example file:
-
-    ```sh
-    cp .env.example .env
-    ```
-
-2.  Edit the `.env` file with your desired settings.
-
-    ```dotenv
-    # .env
-    # Port for the MCP server (if using HTTP transport)
-    PORT=3000
-
-    # You can add other configurations here, like API keys for external services
-    # DAD_JOKE_API_KEY=your_api_key_here
-    ```
-
-### Running the Server
-
-Start the MCP server with the following command:
+To start the local development server, run:
 
 ```sh
-npm start
+npm run dev
 ```
 
-The server will now be running and ready to accept connections from an MCP client, like the MCP Inspector.
+Open http://localhost:5173 (or whatever port is shown) in your browser to see the result. The page will auto-update as you make changes.
 
-## 🤖 MCP API
+### Building for Production
 
-The `dad-card` server exposes the following tools, resources, and prompts.
+To create a production-ready build, run:
 
-### Tools
-
-#### 🛠️ `get-dad-joke`
-
-Fetches a random, high-quality dad joke.
-
-- **Description**: "Returns a classic dad joke."
-- **Input**: None
-- **Output**: A `text` object containing the joke.
-
-**Example Usage (from an MCP client):**
-
-```javascript
-const jokeResult = await client.callTool({ name: "get-dad-joke" });
-console.log(jokeResult.content[0].text);
-// Why don't skeletons fight each other? They don't have the guts.
+```sh
+npm run build
 ```
 
-### Resources
+This will create a `dist` folder with the static assets that you can deploy to any web hosting service.
 
-#### 📄 `card://{occasion}/{recipient}`
+## 🎨 Customization
 
-Generates a personalized message for a digital card.
+All the content for the card can be easily customized by editing the `src/lib/constants.ts` file.
 
-- **Description**: "Creates a formatted message for a card based on the occasion and recipient."
-- **URI Template**: `card://{occasion}/{recipient}`
-- **Parameters**:
-  - `occasion` (string): The event (e.g., `fathers-day`, `birthday`).
-  - `recipient` (string): The name of the person receiving the card (e.g., `Dad`, `Pops`).
-- **Output**: A resource with the formatted card text.
+```typescript
+// src/lib/constants.ts
 
-**Example Usage (from an MCP client):**
+// --- Quick customization (edit these) ---
+export const DAD_NAME = "Dad"; // e.g. "Miguel" or "Robert"
+export const BIRTHDAY_YEAR = 2025;
+// theme options: "gold", "ocean", "forest", "violet"
+export const THEME = "gold" as const;
 
-```javascript
-const cardMessage = await client.readResource({
-  uri: "card://fathers-day/Dad",
-});
-console.log(cardMessage.contents[0].text);
-// Happy Father's Day, Dad! Thanks for everything.
+// Swap with your real photos
+export const GALLERY = [
+  { src: "https://.../photo1.jpg", alt: "Throwback road trip" },
+  { src: "https://.../photo2.jpg", alt: "Working on a project together" },
+  // ... add more photos here
+];
 ```
 
-### Prompts
-
-#### ✍️ `write-card-message`
-
-A prompt template to guide an LLM in composing a custom card message.
-
-- **Description**: "Helps write a personalized message for a card."
-- **Arguments**:
-  - `occasion` (string): The event for the card.
-  - `recipient_name` (string): The name of the recipient.
-  - `tone` (string): The desired tone of the message (e.g., `funny`, `sentimental`, `formal`).
-- **Output**: A set of messages to be sent to an LLM for completion.
-
-**Example Usage (from an MCP client):**
-
-```javascript
-const prompt = await client.getPrompt({
-  name: "write-card-message",
-  arguments: {
-    occasion: "Birthday",
-    recipient_name: "Dad",
-    tone: "funny",
-  },
-});
-// The client can now use these prompt messages to get a completion from an LLM.
-```
+You can also change the text directly in the `src/App.tsx` component for more in-depth modifications.
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a pull request or open an issue for bugs, feature requests, or improvements.
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 1.  Fork the Project
 2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
